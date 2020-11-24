@@ -55,4 +55,18 @@
    
 ### 增加`Local` `Relay` `Proxy` 整套系统
 
-> 参见 `ft` 目录
+1. 编译、生成证书
+    ```bash
+    git clone git@github.com:jiuzhou-zhao/lumos.git
+    ./scripts/certs.sh
+    cd lumos
+    go build -o lumos ./cmd
+    ```
+   
+2. 拷贝`config-sample.yaml`为`config.yaml`, 修改 - 参见 `ft` 目录
+3. 分别在`local`, `relay`, `server`上部署配置文件和`lumos`程序, 其中`relay`可以有多个
+4. 各个节点执行命令
+    ```bash
+    ./lumos
+    ```
+
