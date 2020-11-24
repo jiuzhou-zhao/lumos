@@ -1,4 +1,4 @@
-name: ut
+name: golangci-lint
 on:
   push:
     branches: [ master ]
