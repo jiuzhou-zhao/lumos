@@ -30,7 +30,7 @@ jobs:
         fi
 
     - name: Build
-      run: go build -o http-proxy -v ./cmd
+      run: go build -o lumos -v ./cmd
 
     - name: Test
       run: go test -v -count 1 ./...
