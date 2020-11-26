@@ -17,7 +17,9 @@ func main() {
 		logrus.Fatalf("error reading config: %s", err)
 	}
 
-	logrus.SetFormatter(&logrus.TextFormatter{})
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
 	logrus.SetLevel(logrus.DebugLevel)
 
 	logrus.Infof("Using configuration file '%s'\n", viper.ConfigFileUsed())
@@ -34,6 +36,9 @@ func main() {
 	if cfg.EffectMode == config.ModeLocal || cfg.EffectMode == config.ModeRelay {
 		transProxy := server.NewTransProxy(&cfg)
 		transProxy.Serve()
+	} else if cfg.EffectMode == config.ModeSocks5Proxy {
+		socks5Proxy := server.NewSocks5Proxy(&cfg)
+		socks5Proxy.Serve()
 	} else {
 		httpProxyServer := server.NewHTTPProxy(&cfg)
 		httpProxyServer.Serve()

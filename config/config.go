@@ -9,20 +9,23 @@ import (
 type ProxyMode int
 
 const (
-	ModeProxy ProxyMode = 0
-	ModeLocal ProxyMode = 1
-	ModeRelay ProxyMode = 2
+	ModeHTTPProxy   ProxyMode = 0
+	ModeLocal       ProxyMode = 1
+	ModeRelay       ProxyMode = 2
+	ModeSocks5Proxy ProxyMode = 10
 )
 
-func (mode ProxyMode) Parse(s string) ProxyMode {
+func ParseProxyMode(s string) ProxyMode {
 	s = strings.ToLower(s)
 	switch s {
 	case "local":
 		return ModeLocal
 	case "relay":
 		return ModeRelay
+	case "socks5":
+		return ModeSocks5Proxy
 	default:
-		return ModeProxy
+		return ModeHTTPProxy
 	}
 }
 
@@ -46,10 +49,11 @@ type Config struct {
 	}
 
 	DialTimeout time.Duration
+	ExternalIP  string
 }
 
 func (cfg *Config) Fix(cfgDir string) {
-	cfg.EffectMode = ModeProxy.Parse(cfg.Mode)
+	cfg.EffectMode = ParseProxyMode(cfg.Mode)
 	if cfg.DialTimeout <= 0 {
 		cfg.DialTimeout = 30 * time.Second
 	}

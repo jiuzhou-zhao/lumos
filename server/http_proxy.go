@@ -15,7 +15,7 @@ type HTTPProxy struct {
 }
 
 func NewHTTPProxy(cfg *config.Config) *HTTPProxy {
-	if cfg.EffectMode != config.ModeLocal && cfg.EffectMode != config.ModeProxy {
+	if cfg.EffectMode != config.ModeLocal && cfg.EffectMode != config.ModeHTTPProxy {
 		logrus.Fatalf("invalid mode: %v", cfg.Mode)
 	}
 
@@ -50,7 +50,7 @@ func (proxy *HTTPProxy) Serve() {
 	logrus.Infof("%v listen on: %v\n", proxy.cfg.Mode, proxy.cfg.ProxyAddress)
 
 	for client := range clientChan {
-		go NewHTTPProxyConn(client, proxy).Server()
+		go NewHTTPProxyConn(client, proxy).Serve()
 	}
 }
 

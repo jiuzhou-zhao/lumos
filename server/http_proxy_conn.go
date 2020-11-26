@@ -29,7 +29,7 @@ func NewHTTPProxyConn(conn net.Conn, proxy *HTTPProxy) *HTTPProxyConn {
 	}
 }
 
-func (conn *HTTPProxyConn) Server() {
+func (conn *HTTPProxyConn) Serve() {
 	defer func() {
 		_ = conn.conn.Close()
 	}()

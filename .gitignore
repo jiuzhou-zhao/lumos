@@ -1,3 +1,4 @@
 /certs
 /.idea
 /config.yaml
+/build.sh

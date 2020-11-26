@@ -83,7 +83,7 @@ func TestAllProxy(t *testing.T) {
 	go fnStarServer(&cfgRelay)
 
 	//
-	cfg.EffectMode = config.ModeProxy
+	cfg.EffectMode = config.ModeHTTPProxy
 	cfg.ProxyAddress = ":8002"
 	cfg.RemoteProxyAddress = ""
 
