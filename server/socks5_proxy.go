@@ -34,8 +34,8 @@ func (proxy *Socks5Proxy) Serve() {
 	var clientChan <-chan net.Conn
 	var err error
 
-	if proxy.cfg.Secure.EnableTLSServer {
-		clientChan, err = tcpServer.StartTLS(proxy.cfg.ProxyAddress, proxy.cfg.Secure.Server)
+	if proxy.cfg.Secure.TLSEnableFlag.ServerUseTLS {
+		clientChan, err = tcpServer.StartTLS(proxy.cfg.ProxyAddress, proxy.cfg.Secure.ServerTLSConfig)
 	} else {
 		clientChan, err = tcpServer.Start(proxy.cfg.ProxyAddress)
 	}

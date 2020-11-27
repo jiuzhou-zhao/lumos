@@ -59,8 +59,8 @@ func TestAllProxy(t *testing.T) {
 	}
 
 	//
-	cfg.Secure.EnableTLSClient = true
-	cfg.Secure.EnableTLSServer = true
+	cfg.Secure.TLSEnableFlag.ServerUseTLS = true
+	cfg.Secure.TLSEnableFlag.ConnectServerUseTLS = true
 
 	//
 	cfg.EffectMode = config.ModeLocal

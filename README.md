@@ -17,11 +17,11 @@
 
 ## About Lumos
 
-`Lumos`这个咒语为“荧光闪烁”，施法时候会在魔杖尖出现亮光。此后如若前方黑暗，我就为你喊出荧光闪烁吧。 
+`Lumos`这个咒语为“荧光闪烁”，施法时候会在魔杖尖出现亮光。此后如若前方黑暗，我就为你喊出荧光闪烁吧！
 
 `Lumos`带人寻找光明。
 
-## 目标 - `HTTP` `HTTPS` `Socks5[TCP]` 代理
+## 目标 - `HTTP` `Socks5[TCP]` 代理
 
 * 支持权限验证
 * 支持`relay`模式，中继通过`tls`来保证安全性
@@ -41,6 +41,7 @@
     ```yml
     Mode: proxy
     ProxyAddress: ":8000"
+    DialTimeout: 30s
     Credentials:
       - "u1:p1"
     ```
@@ -66,11 +67,13 @@
     ```bash
     ./scripts/certs.sh
     ```
-   > 如果已经有证书，则不用此步骤；生成的证书会存放在`certs`目录里
+   > 如果已经有证书，则不用此步骤
+   >
+   > 生成的证书会存放在`certs`目录里
    >
    > 注意：修改脚本中目录`server.conf`中的`alt_names` 字段来适配真正的域名
    >
-   > 所以，如果有多个服务器，则需要每个服务器都部署不同的证书
+   > 所以，如果有多个服务器，要么为每个服务器都部署不同的证书，要么把所有域名 IP都加入`alt_names`字段里
    
 3. 拷贝`config-sample.yaml`为`config.yaml`, 修改 - 参见 `ft` 目录
 
@@ -86,21 +89,40 @@
 
 #### 配置文件模板 [`local`+`proxy`]
 
-##### `local`
+##### `local` - 例如`sv1`上配置的，`relay`在`sv2`上
 ```yaml
 Mode: local
 ProxyAddress: ":8000"
-RemoteProxyAddress: "mail.ymicj.com:8000"
+RemoteProxyAddress: "sv2:8001"
 Secure:
-  EnableTLSServer: true
-  cert:
-  Client:
+  TLSEnableFlag:
+    ConnectServerUseTLS: true
+  ConnectServerTLSConfig:
     Cert: ./certs/proxy-client.crt
     Key: ./certs/proxy-client.key
     RootCAs:
       - ./certs/ca.crt
       - ./certs/server.crt
-  Server:
+
+DialTimeout: 30s
+```
+
+##### `relay` - 例如`sv2`上配置的，`proxy`在`sv3`上
+```yaml
+Mode: relay
+ProxyAddress: ":8001"
+RemoteProxyAddress: "sv3:8001"
+Secure:
+  TLSEnableFlag:
+    ConnectServerUseTLS: true
+    ServerUseTLS: true
+  ConnectServerTLSConfig:
+    Cert: ./certs/proxy-client.crt
+    Key: ./certs/proxy-client.key
+    RootCAs:
+      - ./certs/ca.crt
+      - ./certs/server.crt
+  ServerTLSConfig:
     Cert: ./certs/proxy-server.crt
     Key: ./certs/proxy-server.key
     RootCAs:
@@ -110,20 +132,14 @@ Secure:
 DialTimeout: 30s
 ```
 
-##### `http proxy`
+##### `http proxy` - 例如`sv3`上配置的
 ```yaml
-Mode: proxy
-ProxyAddress: ":8000"
+Mode: socks5
+ProxyAddress: ":8001"
 Secure:
-  EnableTLSClient: true
-  cert:
-  Client:
-    Cert: ./certs/proxy-client.crt
-    Key: ./certs/proxy-client.key
-    RootCAs:
-      - ./certs/ca.crt
-      - ./certs/server.crt
-  Server:
+  TLSEnableFlag:
+    ServerUseTLS: true
+  ServerTLSConfig:
     Cert: ./certs/proxy-server.crt
     Key: ./certs/proxy-server.key
     RootCAs:
@@ -135,7 +151,5 @@ DialTimeout: 30s
 
 > `Mode` 可改为 `socks5` 来变为 `socks5`代理
 >
-> 如果中间增加`relay`则配置文件的 `EnableTLSServer` 和 `EnableTLSClient` 都要为 `True`
->
-> 最后，别忘记防火墙
+> 别忘记防火墙
 >

@@ -33,6 +33,11 @@ func main() {
 	dir, _ := path.Split(viper.ConfigFileUsed())
 	cfg.Fix(dir)
 
+	logrus.Info("lumos mode:\n")
+	logrus.Infof("  %v\n", cfg.EffectMode.String())
+	logrus.Infof("  Server Use TLS: %v\n", cfg.Secure.TLSEnableFlag.ServerUseTLS)
+	logrus.Infof("  Connect Remote Server Use TLS: %v", cfg.Secure.TLSEnableFlag.ConnectServerUseTLS)
+
 	if cfg.EffectMode == config.ModeLocal || cfg.EffectMode == config.ModeRelay {
 		transProxy := server.NewTransProxy(&cfg)
 		transProxy.Serve()
