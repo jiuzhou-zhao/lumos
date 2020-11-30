@@ -41,7 +41,7 @@ func (proxy *TransProxy) Serve() {
 		logrus.Fatalf("start tcp server failed: %v", err)
 	}
 
-	logrus.Infof("%v listen on: %v\n", proxy.cfg.Mode, proxy.cfg.ProxyAddress)
+	logrus.Infof("%v listen on: %v", proxy.cfg.Mode, proxy.cfg.ProxyAddress)
 
 	for client := range clientChan {
 		go func(client net.Conn) {

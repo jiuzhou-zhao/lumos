@@ -1,24 +1,5 @@
 Mode: proxy
 ProxyAddress: ":8000"
-RemoteProxyAddress: "127.0.0.1:8000"
 Credentials:
   - "u1:p1"
-
-Secure:
-  EnableTLSClient: false
-  EnableTLSServer: false
-  cert:
-  Client:
-    Cert: ./certs/proxy-client.crt
-    Key: ./certs/proxy-client.key
-    RootCAs:
-      - ./certs/ca.crt
-      - ./certs/server.crt
-  Server:
-    Cert: ./certs/proxy-server.crt
-    Key: ./certs/proxy-server.key
-    RootCAs:
-      - ./certs/ca.crt
-      - ./certs/client.crt
-
 DialTimeout: 30s

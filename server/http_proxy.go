@@ -22,7 +22,7 @@ func NewHTTPProxy(cfg *config.Config) *HTTPProxy {
 	credentials := make(map[string]interface{})
 	for _, credential := range cfg.Credentials {
 		credential = base64.StdEncoding.EncodeToString([]byte(credential))
-		logrus.Debugf("use credential: %v\n", credential)
+		logrus.Debugf("use credential: %v", credential)
 		credentials[credential] = true
 	}
 	return &HTTPProxy{
@@ -47,7 +47,7 @@ func (proxy *HTTPProxy) Serve() {
 		logrus.Fatalf("start tcp server failed: %v", err)
 	}
 
-	logrus.Infof("%v listen on: %v\n", proxy.cfg.Mode, proxy.cfg.ProxyAddress)
+	logrus.Infof("%v listen on: %v", proxy.cfg.Mode, proxy.cfg.ProxyAddress)
 
 	for client := range clientChan {
 		go NewHTTPProxyConn(client, proxy).Serve()
