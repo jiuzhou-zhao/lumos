@@ -31,8 +31,8 @@ func (proxy *TransProxy) Serve() {
 
 	var clientChan <-chan net.Conn
 	var err error
-	if proxy.cfg.EffectMode == config.ModeRelay && proxy.cfg.Secure.EnableTLSServer {
-		clientChan, err = tcpServer.StartTLS(proxy.cfg.ProxyAddress, proxy.cfg.Secure.Server)
+	if proxy.cfg.Secure.TLSEnableFlag.ServerUseTLS {
+		clientChan, err = tcpServer.StartTLS(proxy.cfg.ProxyAddress, proxy.cfg.Secure.ServerTLSConfig)
 	} else {
 		clientChan, err = tcpServer.Start(proxy.cfg.ProxyAddress)
 	}
@@ -45,8 +45,8 @@ func (proxy *TransProxy) Serve() {
 
 	for client := range clientChan {
 		go func(client net.Conn) {
-			remoteConn, err := utils.EasyTCPConnectServer(proxy.cfg.Secure.EnableTLSClient, proxy.cfg.Secure.Client,
-				proxy.cfg.RemoteProxyAddress, proxy.cfg.DialTimeout)
+			remoteConn, err := utils.EasyTCPConnectServer(proxy.cfg.Secure.TLSEnableFlag.ConnectServerUseTLS,
+				proxy.cfg.Secure.ConnectServerTLSConfig, proxy.cfg.RemoteProxyAddress, proxy.cfg.DialTimeout)
 			if err != nil {
 				logrus.Errorf("dial %v failed: %v", proxy.cfg.RemoteProxyAddress, err)
 				return
