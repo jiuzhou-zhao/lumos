@@ -36,7 +36,7 @@ func (conn *HTTPProxyConn) Serve() {
 
 	rawHttpRequestHeader, remote, credential, proxyFlag, err := conn.getTunnelInfo()
 	if err != nil {
-		logrus.Errorf("parse tunnel info failed: %v\n", err)
+		logrus.Errorf("parse tunnel info failed: %v", err)
 		return
 	}
 
@@ -45,10 +45,10 @@ func (conn *HTTPProxyConn) Serve() {
 		return
 	}
 
-	logrus.Infof("connecting to %v\n", remote)
+	logrus.Infof("connecting to %v", remote)
 	remoteConn, err := net.Dial("tcp", remote)
 	if err != nil {
-		logrus.Errorf("dial %v failed: %v\n", remote, err)
+		logrus.Errorf("dial %v failed: %v", remote, err)
 		return
 	}
 
@@ -56,22 +56,22 @@ func (conn *HTTPProxyConn) Serve() {
 		// if https, should sent 200 to client
 		_, err = conn.conn.Write([]byte("HTTP/1.1 200 Connection established\r\n\r\n"))
 		if err != nil {
-			logrus.Errorf("write failed: %v\n", err)
+			logrus.Errorf("write failed: %v", err)
 			return
 		}
 	} else {
 		// if not https, should sent the request header to remote
 		_, err = rawHttpRequestHeader.WriteTo(remoteConn)
 		if err != nil {
-			logrus.Errorf("write failed: %v\n", err)
+			logrus.Errorf("write failed: %v", err)
 			return
 		}
 	}
 
 	// build bidirectional-streams
-	logrus.Infof("begin tunnel %v <-> %v\n", conn.conn.RemoteAddr(), remote)
+	logrus.Infof("begin tunnel %v <-> %v", conn.conn.RemoteAddr(), remote)
 	conn.tunnel(remoteConn)
-	logrus.Infof("stop tunnel %v <-> %v\n", conn.conn.RemoteAddr(), remote)
+	logrus.Infof("stop tunnel %v <-> %v", conn.conn.RemoteAddr(), remote)
 }
 
 func (conn *HTTPProxyConn) tunnel(remoteConn net.Conn) {
@@ -81,12 +81,12 @@ func (conn *HTTPProxyConn) tunnel(remoteConn net.Conn) {
 		}()
 		_, err := conn.reader.WriteTo(remoteConn)
 		if err != nil {
-			logrus.Warningf("write failed: %v\n", err)
+			logrus.Warningf("write failed: %v", err)
 		}
 	}()
 	_, err := io.Copy(conn.conn, remoteConn)
 	if err != nil {
-		logrus.Warningf("write failed: %v\n", err)
+		logrus.Warningf("write failed: %v", err)
 	}
 }
 
@@ -118,7 +118,7 @@ func (conn *HTTPProxyConn) getTunnelInfo() (rawReqHeader bytes.Buffer, host, cre
 
 	mimeHeader, err := tp.ReadMIMEHeader()
 	if err != nil {
-		logrus.Errorf("read mime header failed: %v\n", err)
+		logrus.Errorf("read mime header failed: %v", err)
 		return
 	}
 
@@ -153,7 +153,7 @@ func (conn *HTTPProxyConn) auth(credential string) bool {
 	_, err := conn.conn.Write(
 		[]byte("HTTP/1.1 407 Proxy Authentication Required\r\nProxy-Authenticate: Basic realm=\"*\"\r\n\r\n"))
 	if err != nil {
-		logrus.Errorf("write failed: %v\n", err)
+		logrus.Errorf("write failed: %v", err)
 	}
 	return false
 }
@@ -162,7 +162,7 @@ func parseRequestLine(line string) (method, requestURI, proto string, ok bool) {
 	s1 := strings.Index(line, " ")
 	s2 := strings.Index(line[s1+1:], " ")
 	if s1 < 0 || s2 < 0 {
-		logrus.Errorf("unknown first line: %v\n", line)
+		logrus.Errorf("unknown first line: %v", line)
 		return
 	}
 	s2 += s1 + 1

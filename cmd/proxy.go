@@ -22,7 +22,7 @@ func main() {
 	})
 	logrus.SetLevel(logrus.DebugLevel)
 
-	logrus.Infof("Using configuration file '%s'\n", viper.ConfigFileUsed())
+	logrus.Infof("Using configuration file '%s'", viper.ConfigFileUsed())
 
 	var cfg config.Config
 	err = viper.Unmarshal(&cfg)
@@ -33,9 +33,9 @@ func main() {
 	dir, _ := path.Split(viper.ConfigFileUsed())
 	cfg.Fix(dir)
 
-	logrus.Info("lumos mode:\n")
-	logrus.Infof("  %v\n", cfg.EffectMode.String())
-	logrus.Infof("  Server Use TLS: %v\n", cfg.Secure.TLSEnableFlag.ServerUseTLS)
+	logrus.Info("lumos mode:")
+	logrus.Infof("  %v", cfg.EffectMode.String())
+	logrus.Infof("  Server Use TLS: %v", cfg.Secure.TLSEnableFlag.ServerUseTLS)
 	logrus.Infof("  Connect Remote Server Use TLS: %v", cfg.Secure.TLSEnableFlag.ConnectServerUseTLS)
 
 	if cfg.EffectMode == config.ModeLocal || cfg.EffectMode == config.ModeRelay {

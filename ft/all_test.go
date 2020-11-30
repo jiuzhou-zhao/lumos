@@ -28,7 +28,7 @@ func TestAllProxy(t *testing.T) {
 	logrus.SetFormatter(&logrus.TextFormatter{})
 	logrus.SetLevel(logrus.DebugLevel)
 
-	logrus.Infof("Using configuration file '%s'\n", viper.ConfigFileUsed())
+	logrus.Infof("Using configuration file '%s'", viper.ConfigFileUsed())
 
 	var cfg config.Config
 	err = viper.Unmarshal(&cfg)

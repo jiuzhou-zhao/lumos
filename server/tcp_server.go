@@ -66,7 +66,7 @@ func (svr *TCPServer) startEntry() (<-chan net.Conn, error) {
 		for {
 			conn, err := listener.Accept()
 			if err != nil {
-				logrus.Errorf("accept failed: %v\n", err)
+				logrus.Errorf("accept failed: %v", err)
 				continue
 			}
 			svr.clientChan <- conn
