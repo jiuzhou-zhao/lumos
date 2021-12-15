@@ -8,9 +8,6 @@
 <br>
 
 <div align="center">
-  <a href="https://app.dependabot.com/accounts/jiuzhou-zhao/repos/315576886">
-    <img src="https://api.dependabot.com/badges/status?host=github&repo=jiuzhou-zhao/lumos&identifier=315576886" alt="Dependabot">
-  </a>
   <img src="https://github.com/jiuzhou-zhao/lumos/workflows/ut/badge.svg?branch=master&event=push" alt="Unit Test">
   <img src="https://github.com/jiuzhou-zhao/lumos/workflows/golangci-lint/badge.svg?branch=master&event=push" alt="GolangCI Linter">
 </div>
