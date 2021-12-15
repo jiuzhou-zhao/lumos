@@ -43,6 +43,7 @@
       - "u1:p1"
     ```
    > `Credentials`可选，选择了则支持权限认证
+   > 
    > `Mode` 设置为 `socks5` 则为 `socks5`代理
 
 3. 运行
