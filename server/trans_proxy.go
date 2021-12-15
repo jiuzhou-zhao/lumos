@@ -51,6 +51,9 @@ func (proxy *TransProxy) Serve() {
 				logrus.Errorf("dial %v failed: %v", proxy.cfg.RemoteProxyAddress, err)
 				return
 			}
+
+			defer client.Close()
+
 			go func() {
 				_, _ = io.Copy(client, remoteConn)
 			}()
