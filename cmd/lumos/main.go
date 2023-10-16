@@ -1,11 +1,12 @@
 package main
 
 import (
+	"path"
+
 	"github.com/jiuzhou-zhao/lumos.git/config"
 	"github.com/jiuzhou-zhao/lumos.git/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"path"
 )
 
 func main() {

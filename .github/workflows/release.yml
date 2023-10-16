@@ -28,7 +28,7 @@ jobs:
 
       - name: Build
         run: |
-          go build -o lumos -v ./cmd
+          go build -o lumos -v ./cmd/lumos/
           tar zcvf lumos-linux.tgz lumos scripts config-sample.yaml
 
       - name: Create Release
